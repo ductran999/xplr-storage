@@ -31,3 +31,8 @@ go.work.sum
 # .idea/
 .vscode/
 simple_db/database
+
+# ignore all database files
+*.db
+
+bin/
