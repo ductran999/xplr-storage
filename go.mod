@@ -4,6 +4,7 @@ go 1.25.1
 
 require (
 	github.com/brianvoe/gofakeit/v7 v7.14.1
+	github.com/google/btree v1.1.3
 	github.com/google/uuid v1.6.0
 	github.com/spf13/cobra v1.10.2
 )
