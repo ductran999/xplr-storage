@@ -34,5 +34,6 @@ simple_db/database
 
 # ignore all database files
 *.db
+*.log
 
 bin/
