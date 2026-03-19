@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16.4-alpine
+    container_name: inventory_pg
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: inventory
+    env_file:
+      - .env
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - localnet
+    restart: unless-stopped
+    # Check DB health
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d inventory"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  migrate:
+    image: migrate/migrate
+    container_name: migrate_job
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "migrate -path=/migrations -database=postgres://test:test@db:5432/inventory?sslmode=disable up",
+      ]
+    volumes:
+      - ./migrations:/migrations
+    networks:
+      - localnet
+
+networks:
+  localnet:
+    driver: bridge
+
+volumes:
+  pg-data:
+    driver: local
