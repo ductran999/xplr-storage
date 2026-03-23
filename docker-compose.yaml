@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
-      POSTGRES_DB: inventory
+      POSTGRES_DB: dbtest
     env_file:
       - .env
     volumes:
@@ -38,7 +38,7 @@ services:
         "migrate -path=/migrations -database=postgres://test:test@db:5432/inventory?sslmode=disable up",
       ]
     volumes:
-      - ./migrations:/migrations
+      - ./locks/migrations:/migrations
     networks:
       - localnet
 
